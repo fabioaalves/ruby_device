@@ -54,7 +54,6 @@ class VoiceRecognition:
 
             audio_data = np.frombuffer(data, dtype=np.int16)
 
-            print(np.max(audio_data))
             if np.max(audio_data) > 200:
                 peak_counter += 1
 
@@ -81,7 +80,7 @@ class VoiceRecognition:
             wf.setframerate(self.sample_rate)
             wf.writeframes(b"".join(frames))
 
-        print("Gravação concluída e salva em", self.output_file)
+        print("Saved ", self.output_file)
 
     def recognize_speech(self):
         r = sr.Recognizer()
