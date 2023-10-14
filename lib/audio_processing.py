@@ -4,7 +4,7 @@ import random
 import onnxruntime as rt
 from enum import Enum
 
-from efficient_word.audio_utils import logfbank
+from lib.audio_utils import logfbank
 
 LIB_FOLDER_LOCATION = os.path.dirname(os.path.realpath(__file__))
 
