@@ -1,3 +1,4 @@
+import os
 import pyaudio
 import wave
 import numpy as np
@@ -16,11 +17,14 @@ class VoiceRecognition:
         self.sample_rate = sample_rate
         self.channels = channels
 
+        path = os.path.dirname(os.path.realpath(__file__))
+        ref_file = os.listdir(os.path.join(path, "lib/ruby_ref.json"))
+
         self.base_model = Resnet50_Arc_loss()
         self.ruby = HotwordDetector(
             hotword="ruby",
             model=self.base_model,
-            reference_file="lib/ruby_ref.json",
+            reference_file=ref_file,
             threshold=0.7,
             relaxation_time=2
         )
