@@ -18,13 +18,12 @@ class VoiceRecognition:
         self.channels = channels
 
         path = os.path.dirname(os.path.realpath(__file__))
-        ref_file = os.listdir(os.path.join(path, "ruby_ref.json"))
 
         self.base_model = Resnet50_Arc_loss()
         self.ruby = HotwordDetector(
             hotword="ruby",
             model=self.base_model,
-            reference_file=ref_file,
+            reference_file=os.path.join(path, "ruby_ref.json"),
             threshold=0.7,
             relaxation_time=2
         )
