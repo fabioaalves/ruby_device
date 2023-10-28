@@ -7,15 +7,17 @@ from datetime import datetime, timedelta
 from lib.audio_processing import Resnet50_Arc_loss
 from lib.engine import HotwordDetector
 from lib.streams import SimpleMicStream
+from src.connection import Connection
 
 
 class VoiceRecognition:
-    def __init__(self, sample_rate=44100, channels=2):
+    def __init__(self, socket=None):
+        self.socket: Connection = socket
         self.chunk = 1024
         self.output_file = "audio.wav"
         self.duration = 5
-        self.sample_rate = sample_rate
-        self.channels = channels
+        self.sample_rate = 44100
+        self.channels = 2
 
         path = os.path.dirname(os.path.realpath(__file__))
 
@@ -80,7 +82,7 @@ class VoiceRecognition:
             wf.setframerate(self.sample_rate)
             wf.writeframes(b"".join(frames))
 
-        print("Saved ", self.output_file)
+        print("Saved", self.output_file)
 
     def recognize_speech(self):
         r = sr.Recognizer()
@@ -90,6 +92,7 @@ class VoiceRecognition:
         try:
             text = r.recognize_google(audio_data)
             print("Recognized speech:", text)
+            self.socket.send(text)
         except sr.UnknownValueError:
             print("Could not understand speech")
         except sr.RequestError as e:
